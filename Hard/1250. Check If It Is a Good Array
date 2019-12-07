@@ -1,0 +1,17 @@
+def gcd(a,b):
+    if not b:
+        return a
+    return gcd(b,a%b)
+
+class Solution(object):
+    def isGoodArray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        cur = 0
+        for i in nums:
+            cur = gcd(cur,i)
+        if cur > 1:
+            return False
+        return True
