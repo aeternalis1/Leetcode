@@ -29,37 +29,32 @@ public:
             p[i] = i;
         }
         vector<int> primes;
-        for (int i=2;i<MAXN;i++){
+        for (int i=2;i*i<MAXN;i++){
             if (!prime[i]){
                 primes.push_back(i);
-                for (int j=i+i;j<MAXN;j+=i){
+                for (int j=i*i;j<MAXN;j+=i){
                     prime[j] = 1;
                 }
             }
         }
         for (int i=0;i<N;i++){
-            if (!prime[A[i]]){
-                cnt[A[i]]++;
-            }
-        }
-        for (int i=0;i<N;i++){
-            if (prime[A[i]]){
-                vector<int> fact;
-                for (int j:primes){
-                    if (A[i]%j==0){
-                        fact.push_back(j);
-                        while (A[i]%j==0) A[i] /= j;
-                        if (A[i] == 1) break;
-                    }
+            if (A[i]==1) continue;
+            vector<int> fact;
+            for (int j:primes){
+                if (A[i]%j==0){
+                    fact.push_back(j);
+                    while (A[i]%j==0) A[i] /= j;
+                    if (A[i] == 1) break;
                 }
-                int len = fact.size();
-                for (int j=0;j<len-1;j++){
-                    int a = par(fact[j]);
-                    int b = par(fact[j+1]);
-                    if (a!=b) merge(a,b);
-                }
-                cnt[par(fact[0])]++;
             }
+            if (A[i] != 1) fact.push_back(A[i]);
+            int len = fact.size();
+            for (int j=0;j<len-1;j++){
+                int a = par(fact[j]);
+                int b = par(fact[j+1]);
+                if (a!=b) merge(a,b);
+            }
+            cnt[par(fact[0])]++;
         }
         int ans = 1;
         for (int i=0;i<MAXN;i++){
